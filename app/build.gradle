@@ -147,6 +147,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$support_libraries_version"
     implementation "androidx.legacy:legacy-support-v4:$support_libraries_version"
     implementation "androidx.preference:preference:$support_libraries_version"
+    implementation "androidx.media:media:1.2.0"
     implementation 'io.sentry:sentry-android:1.7.21'
 
     implementation "androidx.lifecycle:lifecycle-extensions:$architecture_components_version"
