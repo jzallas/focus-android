@@ -29,6 +29,7 @@ import mozilla.components.support.ktx.android.util.Base64
 import org.mozilla.focus.R
 import org.mozilla.focus.browser.LocalizedContent
 import org.mozilla.focus.ext.savedWebViewState
+import org.mozilla.focus.gecko.AudioFocusSessionDelegate
 import org.mozilla.focus.gecko.GeckoViewPrompt
 import org.mozilla.focus.gecko.NestedGeckoView
 import org.mozilla.focus.telemetry.TelemetryWrapper
@@ -126,6 +127,7 @@ class GeckoWebViewProvider : IWebViewProvider {
         IWebView,
         SharedPreferences.OnSharedPreferenceChangeListener,
         CoroutineScope {
+        private lateinit var audioFocusDelegate: AudioFocusSessionDelegate
         private var callback: IWebView.Callback? = null
         private var findListener: IFindListener? = null
         private var currentUrl: String = ABOUT_BLANK
@@ -164,10 +166,15 @@ class GeckoWebViewProvider : IWebViewProvider {
         }
 
         private fun createGeckoSession(): GeckoSession {
+            audioFocusDelegate = AudioFocusSessionDelegate(context).apply {
+                shouldAllowAudioFocus = Settings.getInstance(context).shouldAllowAudioFocus()
+            }
+
             val builder = GeckoSessionSettings.Builder()
             builder.usePrivateMode(true)
             builder.suspendMediaWhenInactive(true)
             return GeckoSession(builder.build())
+                .apply { mediaSessionDelegate = audioFocusDelegate }
         }
 
         override fun setCallback(callback: IWebView.Callback?) {
@@ -261,6 +268,9 @@ class GeckoWebViewProvider : IWebViewProvider {
                 context.getString(R.string.pref_key_remote_debugging) ->
                     geckoRuntime!!.settings.remoteDebuggingEnabled =
                             Settings.getInstance(context).shouldEnableRemoteDebugging()
+                context.getString(R.string.pref_key_audio_focus) ->
+                    audioFocusDelegate.shouldAllowAudioFocus =
+                        Settings.getInstance(context).shouldAllowAudioFocus()
                 context.getString(R.string.pref_key_performance_enable_cookies) -> {
                     updateCookieSettings()
                 }

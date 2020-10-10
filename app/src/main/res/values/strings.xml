@@ -680,6 +680,12 @@ be temporary, and you can try again later.</li>
     <!-- Preference to enable remote debugging of the app via USB or Wi-Fi -->
     <string name="preference_remote_debugging">Remote debugging via USB/Wi-Fi</string>
 
+    <!-- Preference to halt media playback when other apps attempt to seize audio focus -->
+    <string name="preference_audio_focus">Request audio focus</string>
+
+    <!-- Description for the audio focus preference describing the audio focus guidelines -->
+    <string name="audio_focus_description">Play nicely with other apps competing for audio playback</string>
+
     <!-- Title for the fingerprint authentication dialog box that is shown to the user when opening the app.
      %1$s is replaced with the app name -->
     <string name="biometric_auth_title">Unlock %1$s</string>

@@ -51,6 +51,11 @@ class Settings private constructor(context: Context) {
                     getPreferenceKey(R.string.pref_key_remote_debugging),
                     false)
 
+    fun shouldAllowAudioFocus(): Boolean =
+            preferences.getBoolean(
+                    getPreferenceKey(R.string.pref_key_audio_focus),
+                    true)
+
     fun shouldDisplayHomescreenTips() =
             preferences.getBoolean(
                     getPreferenceKey(R.string.pref_key_homescreen_tips),
